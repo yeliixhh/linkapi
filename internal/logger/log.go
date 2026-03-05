@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"log/slog"
 	"os"
 	"sync"
@@ -25,5 +26,21 @@ func InitLogger() {
 
 		Log = logger
 	})
+
+}
+
+func Info(message string, args ...interface{}) {
+
+	Log.Info(fmt.Sprintf(message, args...))
+}
+
+func Debug(message string, args ...interface{}) {
+
+	Log.Debug(fmt.Sprintf(message, args...))
+}
+
+func Error(message string, args ...interface{}) {
+
+	Log.Error(fmt.Sprintf(message, args...))
 
 }

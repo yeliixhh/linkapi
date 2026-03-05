@@ -13,12 +13,13 @@ import (
 func main() {
 	c := container.NewApplication()
 
-	logger.Log.Info("Router is ready")
-
 	// 启动容器
 	c.Invoke(func(g *gin.Engine, config *config.Config) {
-		logger.Log.Info("Router is ready")
+		addr := fmt.Sprintf("%s:%s", config.ServerConf.Host, config.ServerConf.Port)
 
-		g.Run(fmt.Sprintf("%s:%s", config.ServerConf.Host, config.ServerConf.Port))
+		logger.Info("服务启动: %s", addr)
+
+		g.Run(addr)
+
 	})
 }

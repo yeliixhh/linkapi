@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/yeliixhh/linkapi/internal/config"
 	"github.com/yeliixhh/linkapi/internal/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -11,11 +12,18 @@ import (
 )
 
 // 初始化DB
-func NewDB() (*gorm.DB, error) {
+func NewDB(config *config.Config) (*gorm.DB, error) {
 	logger.Log.Info(fmt.Sprintf("连接数据库 host: %s", "localhost"))
 
 	// https://github.com/go-gorm/postgres
-	dsn := "host=localhost user=root password=123456 dbname=link_api port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	dsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
+		config.DBConf.Host,
+		config.DBConf.User,
+		config.DBConf.Password,
+		config.DBConf.DBName,
+		config.DBConf.Port,
+	)
 
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,

@@ -3,6 +3,7 @@ package container
 import (
 	"github.com/yeliixhh/linkapi/internal/application/repository"
 	"github.com/yeliixhh/linkapi/internal/application/service"
+	"github.com/yeliixhh/linkapi/internal/config"
 	"github.com/yeliixhh/linkapi/internal/database"
 	"github.com/yeliixhh/linkapi/internal/handler"
 	"github.com/yeliixhh/linkapi/internal/logger"
@@ -16,6 +17,9 @@ func NewApplication() *dig.Container {
 	logger.InitLogger()
 
 	c := dig.New()
+
+	// 加载配置文件
+	must(c.Provide(config.NewConfig))
 
 	// 初始化数据库
 	must(c.Provide(database.NewDB))

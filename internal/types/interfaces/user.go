@@ -19,6 +19,9 @@ type UserService interface {
 
 	// 校验token
 	ValidateToken(ctx context.Context, accessToken string) (*types.SysUser, error)
+
+	// 查询用户信息
+	QueryUserInfo(ctx context.Context) (*types.UserInfo, error)
 }
 
 // 用户存储层

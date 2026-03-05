@@ -33,6 +33,7 @@ func NewApplication() *dig.Container {
 
 	// handler
 	must(c.Provide(handler.NewAuthHandler))
+	must(c.Provide(handler.NewUserHandler))
 
 	// 将服务实例导入容器中
 	must(c.Provide(router.NewRouter))

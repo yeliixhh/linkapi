@@ -214,3 +214,29 @@ func (s *UserServiceImpl) ValidateToken(ctx context.Context, accessToken string)
 
 	return user, nil
 }
+
+func (u *UserServiceImpl) QueryUserInfo(ctx context.Context) (*types.UserInfo, error) {
+	user, err := utils.GetAuthUser(ctx)
+
+	if err != nil {
+		logger.Info("获取用户信息失败: %s", err.Error())
+
+		return nil, errors.New("获取用户信息失败")
+	}
+
+	userInfo, err := u.userRepo.QueryUserById(ctx, user.Id)
+
+	if err != nil {
+		logger.Info("用户%s不存在: %s", user.Id, err.Error())
+
+		return nil, errors.New("获取用户信息失败")
+	}
+
+	var resp = &types.UserInfo{}
+	err = resp.ValueOf(userInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}

@@ -12,6 +12,7 @@ type RouteParams struct {
 	dig.In
 
 	AuthHandler *handler.AuthHandler
+	UserHandler *handler.UserHandler
 
 	UserServer interfaces.UserService
 }
@@ -38,15 +39,25 @@ func NewRouter(params RouteParams) (*gin.Engine, error) {
 	// 使用授权中间件
 	v1Auth.Use(middleware.Auth(params.UserServer))
 
-	RegisterAuthRouter(v1, params.AuthHandler)
+	RegisterAuthRoute(v1, params.AuthHandler)
+	RegisterUserRoute(v1Auth, params.UserHandler)
 
 	return r, nil
 }
 
-func RegisterAuthRouter(r *gin.RouterGroup, h *handler.AuthHandler) {
+// 注册授权路由
+func RegisterAuthRoute(r *gin.RouterGroup, h *handler.AuthHandler) {
 	auth := r.Group("/auth")
 	{
 		auth.POST("/register", h.Register)
 		auth.POST("/login", h.Login)
+	}
+}
+
+// 注册用户路由
+func RegisterUserRoute(r *gin.RouterGroup, u *handler.UserHandler) {
+	user := r.Group("/user")
+	{
+		user.POST("/queryUserInfo", u.QueryUserInfo)
 	}
 }

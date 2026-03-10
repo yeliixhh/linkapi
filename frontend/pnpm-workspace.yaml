@@ -1,0 +1,8 @@
+packages:
+  - packages/*
+
+ignoredBuiltDependencies:
+  - electron
+
+onlyBuiltDependencies:
+  - electron

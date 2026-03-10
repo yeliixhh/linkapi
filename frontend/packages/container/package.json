@@ -12,6 +12,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.18.1",
   "devDependencies": {
+    "@types/electron": "^1.6.12",
     "electron": "^40.8.0"
   }
 }

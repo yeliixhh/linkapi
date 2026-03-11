@@ -20,7 +20,7 @@ import (
 var (
 	REGISTER_ERROR      = errors.New("注册失败")
 	USERNAME_EXISTS     = errors.New("用户名已存在")
-	USERNAME_NOT_EXISTS = errors.New("用户名已不存在")
+	USERNAME_NOT_EXISTS = errors.New("用户名不存在")
 	PASSWORD_ERROR      = errors.New("用户名或密码错误")
 )
 

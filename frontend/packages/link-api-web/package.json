@@ -1,5 +1,5 @@
 {
-  "name": "link-api-web",
+  "name": "@link-api/link-api-web",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,7 +11,9 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
+    "@link-api/common": "workspace:*",
     "pinia": "^3.0.4",
+    "tdesign-vue-next": "^1.18.4",
     "vue": "^3.5.29",
     "vue-router": "^5.0.3"
   },

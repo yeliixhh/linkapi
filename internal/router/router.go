@@ -22,16 +22,16 @@ func NewRouter(params RouteParams) (*gin.Engine, error) {
 
 	r := gin.New()
 
+	// 不需要权限控制
+	v1 := r.Group("/api/v1")
+
 	// 检测健康状态
-	r.GET("/health", func(c *gin.Context) {
+	v1.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status": "ok",
 			"code":   200,
 		})
 	})
-
-	// 不需要权限控制
-	v1 := r.Group("/api/v1")
 
 	// 需要权限控制
 	v1Auth := r.Group("/api/v1")

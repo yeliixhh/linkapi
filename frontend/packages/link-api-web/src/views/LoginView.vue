@@ -1,44 +1,95 @@
 <template>
     <div>
         <div class="login-wrapper">
-            <div class="card" style="padding-bottom: 70px;">
-                <div style="font-weight: 500; font-size: 40px; margin-top: 30px; text-align: center;">Link-API</div>
-                <div style="margin-top: 40px;" class="form-input-contaner">
-                    <div class="form-input-wrap">
-                        <span style="width: 60px; text-align: center; line-height: 30px;">登录名</span>
-                        <input class="form-input" style="padding-left: 10px;"/>
+            <t-loading size="small" :loading="loading" show-overlay  text="登录中...">
+                <div class="card" style="padding-bottom: 70px;">
+                    <div style="font-weight: 500; font-size: 40px; margin-top: 30px; text-align: center;">Link-API</div>
+                    <div style="margin-top: 40px;" class="form-input-contaner">
+                        <div class="form-input-wrap">
+                            <span style="width: 60px; text-align: center; line-height: 30px;">登录名</span>
+                            <input class="form-input" style="padding-left: 10px;" v-model="loginForm.username"
+                                type="text" />
+                        </div>
+
                     </div>
 
-                </div>
+                    <div class="form-input-contaner" style="margin-top: 10px;">
+                        <div class="form-input-wrap">
+                            <span style="width: 60px; text-align: center; line-height: 30px;">密码</span>
+                            <input class="form-input" style="padding-left: 10px;" v-model="loginForm.password"
+                                type="password" />
+                        </div>
+                    </div>
+                    <!-- {{ loginForm }} -->
 
-                <div class="form-input-contaner" style="margin-top: 10px;">
-                    <div class="form-input-wrap">
-                        <span style="width: 60px; text-align: center; line-height: 30px;">密码</span>
-                        <input class="form-input" style="padding-left: 10px;" />
+                    <div style="margin: 0 auto; margin-top: 30px;" class="form-input-wrap">
+                        <input class="form-input" type="button" value="登录"
+                            style="height: 35px; background-color: #0C4283; color: white; font-size: 20px;"
+                            @click="loginHandler">
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <span>忘记密码？</span>
                     </div>
                 </div>
+            </t-loading>
+            <div style="margin-top: 10px; margin-bottom: 10px;">注册新用户</div>
 
-                <div style="margin: 0 auto; margin-top: 30px;" class="form-input-wrap">
-                    <input class="form-input" type="button" value="登录" style="height: 35px; background-color: #0C4283; color: white; font-size: 20px;">
-                </div>
-
-                <div style="text-align: center; margin-top: 20px;">
-                    <span>忘记密码？</span>
-                </div>
-            </div>
-            <div style="margin-top: 10px;">注册新用户</div>
         </div>
 
     </div>
 </template>
 
 <script setup lang="ts">
+import { reactive, ref } from 'vue'
+import { loginAPI } from '@link-api/common/api/login.ts'
+import { MessagePlugin } from 'tdesign-vue-next';
+
+const loginForm = reactive({
+    username: '',
+    password: ''
+})
+
+// 是否在加载中
+const loading = ref(false)
+
+const loginHandler = function () {
+
+    if (loginForm.username.length < 4) {
+        MessagePlugin.error('登录名长度至少4位')
+        return
+    }
+
+    if (loginForm.password.length < 6) {
+        MessagePlugin.error('密码长度至少4位')
+        return
+    }
+
+    loading.value = true
+
+    // 登录api
+    loginAPI(loginForm.username, loginForm.password)
+        .then((res) => {
+            if (res.code !== 200) {
+
+                MessagePlugin.error(res.message)
+
+                return
+            }
+
+            MessagePlugin.success('登录成功')
+        }).finally(() => {
+            loading.value = false
+        })
+}
+
+
 </script>
 
 <style scoped>
 .login-wrapper {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
